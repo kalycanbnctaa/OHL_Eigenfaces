@@ -1,4 +1,4 @@
-# OHL Eigenfaces — Face Recognition Web App
+# OHL Eigenfaces: Face Recognition Web App
 
 Aplikasi web pengenalan wajah sederhana berbasis **Eigenfaces** (Turk & Pentland, 1991), dibangun dengan Flask (backend) dan Next.js (frontend). Seluruh inti algoritma, representasi data, mean-centering, pembentukan eigenface, proyeksi, pengukuran jarak, dan logika pengenalan, diimplementasikan sendiri, tanpa menggunakan library face recognition siap pakai.
 
@@ -93,7 +93,7 @@ Buka `http://localhost:3000` di browser. Pastikan backend (`http://127.0.0.1:500
 
 **AT&T (ORL) Face Dataset** yang berisi kumpulan 400 citra grayscale (40 subjek × 10 citra per subjek), ukuran asli 92×112 piksel, dengan variasi ekspresi wajah, pencahayaan, dan aksesoris (kacamata/tidak).
 
-- Sumber: [AT&T Database of Faces — Kaggle](https://www.kaggle.com/datasets/kasikrit/att-database-of-faces)
+- Sumber: [AT&T Database of Faces, Kaggle](https://www.kaggle.com/datasets/kasikrit/att-database-of-faces)
 - Disimpan di `backend/dataset/orl_faces/sX/Y.pgm`, dengan `X` = nomor subjek (1–40) dan `Y` = nomor citra (1–10)
 - Dataset mentah **di-commit** ke repository karena ukurannya kecil dan agar program bisa langsung dijalankan tanpa perlu mengunduh ulang
 - Data turunan (matriks, mean face, eigenfaces, proyeksi) **tidak** di-commit, semuanya dihitung ulang di memori setiap kali server start (`backend/generated/` masuk `.gitignore`)
@@ -229,7 +229,7 @@ Hasil kalibrasi pada dataset ORL (setelah preprocessing histogram equalization +
 Untuk wajah input dari upload/webcam (yang kondisinya jauh lebih bervariasi dibanding foto ORL yang sudah rapi ter-crop), dilakukan tahap tambahan sebelum proyeksi:
 
 1. **Deteksi & crop wajah** menggunakan Haar Cascade bawaan OpenCV (`cv2.CascadeClassifier`) untuk melokalisasi wajah dominan (area terbesar jika terdeteksi lebih dari satu) dan meng-crop area tersebut, murni untuk lokalisasi, bukan pengenalan (`utils/image_utils.py`, fungsi `detect_and_crop_face`). Jika tidak ada wajah terdeteksi, sistem mengembalikan error `422 No face detected` alih-alih memaksa memproses gambar mentah.
-2. **Histogram equalization** — `cv2.equalizeHist` untuk menormalisasi variasi pencahayaan antara foto training (ORL, pencahayaan terkontrol) dan foto pengguna (webcam/HP, pencahayaan bervariasi).
+2. **Histogram equalization**: `cv2.equalizeHist` untuk menormalisasi variasi pencahayaan antara foto training (ORL, pencahayaan terkontrol) dan foto pengguna (webcam/HP, pencahayaan bervariasi).
 3. **Resize** ke ukuran standar 92×112 piksel.
 4. **Flatten** menjadi vektor 1D.
 
