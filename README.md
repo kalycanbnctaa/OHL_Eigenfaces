@@ -20,10 +20,10 @@ Aplikasi web pengenalan wajah sederhana berbasis **Eigenfaces** (Turk & Pentland
   - [2. Mean-Centering](#2-mean-centering)
   - [3. Komputasi Eigenfaces](#3-komputasi-eigenfaces)
   - [4. Pemilihan Jumlah Eigenfaces (k)](#4-pemilihan-jumlah-eigenfaces-k)
-  - [5. Proyeksi & Pengenalan Wajah](#5-proyeksi--pengenalan-wajah)
+  - [5. Proyeksi dan Pengenalan Wajah](#5-proyeksi--pengenalan-wajah)
   - [6. Cara Pengukuran Kecocokan (Threshold Unknown Face)](#6-cara-pengukuran-kecocokan-threshold-unknown-face)
   - [7. Preprocessing Input Pengguna](#7-preprocessing-input-pengguna)
-  - [8. Tambah Dataset & Retrain Otomatis](#8-tambah-dataset--retrain-otomatis)
+  - [8. Tambah Dataset dan Retrain Otomatis](#8-tambah-dataset--retrain-otomatis)
 - [Batasan dan Asumsi Sistem](#batasan-dan-asumsi-sistem)
 - [Fitur Bonus](#fitur-bonus)
 - [API Endpoints](#api-endpoints)
@@ -52,7 +52,7 @@ Setelah dijalankan, server akan otomatis:
 1. Memuat dataset ORL dari `backend/dataset/orl_faces/`
 2. Melakukan preprocessing (equalize histogram, resize, flatten)
 3. Menghitung mean face, covariance matrix, eigendecomposition, dan proyeksi
-4. Menyimpan visualisasi mean face & top-k eigenfaces ke `backend/generated/`
+4. Menyimpan visualisasi mean face dan top-k eigenfaces ke `backend/generated/`
 5. Menyalakan API server di `http://127.0.0.1:5000`
 
 Contoh log yang akan muncul di terminal:
@@ -183,7 +183,7 @@ Pertimbangan pemilihan `k = 50`:
 
 Untuk keperluan visualisasi (fitur bonus Gallery), hanya `EIGENFACE_TOP_K = 16` eigenface pertama yang divisualisasikan sebagai gambar meskipun seluruh 50 komponen tetap dipakai dalam proses pengenalan.
 
-### 5. Proyeksi & Pengenalan Wajah
+### 5. Proyeksi dan Pengenalan Wajah
 
 Setiap wajah ter-*mean-centered* diproyeksikan ke ruang eigenface berdimensi `k` untuk mendapatkan vektor bobot (koordinat):
 
@@ -228,14 +228,14 @@ Hasil kalibrasi pada dataset ORL (setelah preprocessing histogram equalization +
 
 Untuk wajah input dari upload/webcam (yang kondisinya jauh lebih bervariasi dibanding foto ORL yang sudah rapi ter-crop), dilakukan tahap tambahan sebelum proyeksi:
 
-1. **Deteksi & crop wajah** menggunakan Haar Cascade bawaan OpenCV (`cv2.CascadeClassifier`) untuk melokalisasi wajah dominan (area terbesar jika terdeteksi lebih dari satu) dan meng-crop area tersebut, murni untuk lokalisasi, bukan pengenalan (`utils/image_utils.py`, fungsi `detect_and_crop_face`). Jika tidak ada wajah terdeteksi, sistem mengembalikan error `422 No face detected` alih-alih memaksa memproses gambar mentah.
+1. **Deteksi dan crop wajah** menggunakan Haar Cascade bawaan OpenCV (`cv2.CascadeClassifier`) untuk melokalisasi wajah dominan (area terbesar jika terdeteksi lebih dari satu) dan meng-crop area tersebut, murni untuk lokalisasi, bukan pengenalan (`utils/image_utils.py`, fungsi `detect_and_crop_face`). Jika tidak ada wajah terdeteksi, sistem mengembalikan error `422 No face detected` alih-alih memaksa memproses gambar mentah.
 2. **Histogram equalization**: `cv2.equalizeHist` untuk menormalisasi variasi pencahayaan antara foto training (ORL, pencahayaan terkontrol) dan foto pengguna (webcam/HP, pencahayaan bervariasi).
 3. **Resize** ke ukuran standar 92×112 piksel.
 4. **Flatten** menjadi vektor 1D.
 
 Urutan operasi ini (**crop → equalize → resize → flatten**) diterapkan **konsisten** baik pada jalur query (`preprocess_uploaded_image`) maupun jalur training/retrain (`data_loader.py`) agar distribusi piksel yang dibandingkan berada pada skala yang sama, krusial untuk keakuratan pengukuran jarak di ruang eigenspace.
 
-### 8. Tambah Dataset & Retrain Otomatis
+### 8. Tambah Dataset dan Retrain Otomatis
 
 Saat pengguna menambahkan subjek baru lewat endpoint `POST /dataset/add`:
 
@@ -277,7 +277,7 @@ Dijelaskan lengkap pada [bagian 6](#6-cara-pengukuran-kecocokan-threshold-unknow
 
 | Method | Endpoint | Deskripsi |
 |---|---|---|
-| `GET` | `/health` | Cek status server & nilai threshold aktif |
+| `GET` | `/health` | Cek status server dan nilai threshold aktif |
 | `POST` | `/recognize` | Kirim citra (`multipart/form-data`, field `image`), kembalikan subjek, jarak, dan status known/unknown |
 | `POST` | `/dataset/add` | Tambah citra subjek baru (`image`, `subject`), otomatis retrain |
 | `GET` | `/gallery` | Info seluruh subjek dan jumlah citra |
