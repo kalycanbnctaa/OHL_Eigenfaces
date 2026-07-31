@@ -1,0 +1,16 @@
+[project]
+name = "ohl-eigenfaces-backend"
+version = "0.1.0"
+description = "Backend for Eigenfaces Face Recognition"
+requires-python = ">=3.11"
+
+dependencies = [
+    "flask>=3.1.0",
+    "flask-cors>=5.0.0",
+    "numpy>=2.2,<2.3",
+    "opencv-python==4.12.0.88",
+    "pillow>=11.3.0",
+]
+
+[tool.uv]
+package = false
