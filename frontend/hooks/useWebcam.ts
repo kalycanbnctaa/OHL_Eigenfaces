@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function useWebcam() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -21,17 +21,18 @@ export default function useWebcam() {
       });
 
       streamRef.current = stream;
-
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-
       setIsActive(true);
     } catch {
       setError("Tidak dapat mengakses kamera. Pastikan izin kamera diberikan.");
       setIsActive(false);
     }
   }, []);
+
+  useEffect(() => {
+    if (isActive && videoRef.current && streamRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+    }
+  }, [isActive]);
 
   const stopCamera = useCallback(() => {
     streamRef.current?.getTracks().forEach((track) => track.stop());

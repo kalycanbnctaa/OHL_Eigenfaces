@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 interface Props {
   onUpload: (file: File) => void;
@@ -12,6 +12,7 @@ export default function UploadBox({
   loading = false,
 }: Props) {
   const [file, setFile] = useState<File | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   function handleChange(
     event: React.ChangeEvent<HTMLInputElement>,
@@ -37,18 +38,26 @@ export default function UploadBox({
     <div className="space-y-4 rounded-lg border p-6">
 
       <input
+        ref={inputRef}
         type="file"
         accept="image/*"
         onChange={handleChange}
+        className="hidden"
       />
 
-      {file && (
-        <p>
-          Selected:
-          {" "}
-          {file.name}
-        </p>
-      )}
+      <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          className="rounded-lg border bg-gray-100 px-4 py-2 font-semibold hover:bg-gray-200"
+        >
+          Pilih File
+        </button>
+
+        <span className="text-sm text-gray-500">
+          {file ? file.name : "Belum ada file dipilih"}
+        </span>
+      </div>
 
       <button
         type="button"
