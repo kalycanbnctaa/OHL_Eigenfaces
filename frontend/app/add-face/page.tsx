@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 import WebcamCapture from "@/components/WebcamCapture";
@@ -18,6 +18,7 @@ export default function AddFacePage() {
   const [result, setResult] = useState<AddDatasetResponse | null>(null);
 
   const { file, previewUrl, selectFile, clearFile } = useUpload();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   function parseSubject(): number | null {
     const value = Number(subject);
@@ -86,10 +87,32 @@ export default function AddFacePage() {
       </div>
 
       <div className="space-y-4 rounded-lg border p-6">
-        <input type="file" accept="image/*" onChange={handleFileChange} />
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="rounded-lg border bg-gray-100 px-4 py-2 font-semibold hover:bg-gray-200"
+          >
+            Pilih File
+          </button>
+
+          <span className="text-sm text-gray-500">
+            {file ? file.name : "Belum ada file dipilih"}
+          </span>
+        </div>
+
         {previewUrl && (
           <img src={previewUrl} alt="Preview" className="w-48 rounded-lg border" />
         )}
+
         <button
           type="button"
           onClick={handleUploadSubmit}

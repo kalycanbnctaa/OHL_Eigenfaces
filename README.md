@@ -289,4 +289,4 @@ Dijelaskan lengkap pada [bagian 6](#6-cara-pengukuran-kecocokan-threshold-unknow
 
 ## Link Demo Video
 
-[...]
+https://drive.google.com/file/d/1hX7HPSw91SdUNHsZfN2QWYbin7Pi1rRe/view?usp=sharing 
